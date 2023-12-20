@@ -1,0 +1,7 @@
+*.log
+__pycache__
+db/*
+plugins/venv
+node_modules
+*.dll
+*.so
