@@ -1,5 +1,5 @@
-//go:build wnidows
-// +build wnidows
+//go:build linux
+// +build linux
 
 package main
 
@@ -10,7 +10,8 @@ import (
 )
 
 func main() {
-	cmd := exec.Command("node", "plugins/nodejs/main.js")
+	// not working yet
+	cmd := exec.Command("bun", "plugins/nodejs/main.js")
 
 	// cmd.Dir = ""
 	cmd.Stdout = os.Stdout
