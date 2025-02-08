@@ -3,6 +3,7 @@ const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
 const directoryName = path.dirname(__filename);
 const { logger } = require("./log");
+const { process } = require("./entry");
 // Load grpc_controller.proto
 
 const packageDefinitionController = protoLoader.loadSync(
@@ -38,20 +39,28 @@ function shutdown(call, callback) {
 }
 
 // Implement the Exec RPC method
+// 成功时：callback(null, response)，其中response是你想要返回给客户端的数据对象。
+// 失败时：callback(error)，其中error是一个包含错误码和消息的对象。
+
 function exec(call, callback) {
   try {
-    const payload = JSON.parse(call.request.payload.toString());
-    logger.info(`Exec request received with payload:`, payload);
+    logger.info(`Exec request method:` + call.request.name);
+    // typeof call.request.payload is Buffer
+    // call.request.payload if array of the parameters of the call method,like: [1,2,3]
+    logger.info(`Exec request payload:` + call.request.payload.toString());
 
     // Implement your logic here. For example:
     // let result = someFunction(payload);
 
     // Dummy response
+    const payload = JSON.parse(call.request.payload.toString());
+
+    const result = process(call.request.name, ...payload)
 
     const response = {
       response: Buffer.from(
         JSON.stringify({
-          response: payload,
+          data: result,
         })
       ),
       type: "map", // or any appropriate type
