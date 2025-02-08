@@ -1,5 +1,5 @@
 // yao run scripts.mylib.test
 function test() {
-  let output = Process("plugins.nodejs.hello", "hello world");
+  let output = Process("plugins.jslib.hello", "hello world");
   return output;
 }

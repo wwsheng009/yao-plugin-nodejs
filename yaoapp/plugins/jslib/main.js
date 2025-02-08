@@ -2,7 +2,6 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
 const directoryName = path.dirname(__filename);
-
 const { logger } = require("./log");
 // Load grpc_controller.proto
 

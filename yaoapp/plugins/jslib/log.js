@@ -11,7 +11,7 @@ const logger = winston.createLogger({
       (info) => `${info.timestamp} ${info.level}: ${info.message}`
     )
   ),
-  transports: [new winston.transports.File({ filename: "./logs/nodejs.log" })],
+  transports: [new winston.transports.File({ filename: "./logs/jslib.log" })],
 });
 module.exports = {
   logger,
