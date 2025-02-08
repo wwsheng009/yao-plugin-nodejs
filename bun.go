@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	cmd := exec.Command("bun", "plugins/jslib/main.js")
+	cmd := exec.Command("bun", "nodejs/jslib/main.js")
 
 	// cmd.Dir = ""
 	cmd.Stdout = os.Stdout

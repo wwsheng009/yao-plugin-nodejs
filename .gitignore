@@ -5,3 +5,5 @@ plugins/venv
 node_modules
 *.dll
 *.so
+yaoapp/nodejs/jslib/native/models
+yaoapp/nodejs/jslib/native/tmp
