@@ -3,6 +3,11 @@
 linux-bun:clean
 	go build -o ./yaoapp/plugins/jslib.so ./bun.go
 
+
+windows-grpc:clean
+	CGO_ENABLED=0 GOARCH=amd64 GOOS=windows GOHOSTOS=linux go build -o ./yaoapp/plugins/jslib.dll ./grpc.go
+
+
 windows-bun:clean
 	CGO_ENABLED=0 GOARCH=amd64 GOOS=windows GOHOSTOS=linux go build -o ./yaoapp/plugins/jslib.dll ./bun.go
 

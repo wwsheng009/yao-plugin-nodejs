@@ -21,5 +21,8 @@
     "sharp": "^0.33.5",
     "uuid": "^11.0.5",
     "winston": "^3.11.0"
+  },
+  "patchedDependencies": {
+    "@protobufjs/inquire@1.1.0": "patches/@protobufjs%2Finquire@1.1.0.patch"
   }
 }
