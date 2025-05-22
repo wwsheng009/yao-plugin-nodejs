@@ -7,7 +7,7 @@ const { process } = require("./entry");
 // Load grpc_controller.proto
 
 const packageDefinitionController = protoLoader.loadSync(
-  `${directoryName}/grpc_controller.proto`,
+  `${directoryName}/protos/grpc_controller.proto`,
   { keepCase: true, longs: String, enums: String, defaults: true, oneofs: true }
 );
 const grpc_controller = grpc.loadPackageDefinition(
@@ -16,7 +16,7 @@ const grpc_controller = grpc.loadPackageDefinition(
 
 // Load model.proto
 const packageDefinitionModel = protoLoader.loadSync(
-  `${directoryName}/model.proto`,
+  `${directoryName}/protos/model.proto`,
   {
     keepCase: true,
     longs: String,
@@ -42,7 +42,7 @@ function shutdown(call, callback) {
 // 成功时：callback(null, response)，其中response是你想要返回给客户端的数据对象。
 // 失败时：callback(error)，其中error是一个包含错误码和消息的对象。
 
-function exec(call, callback) {
+async function exec(call, callback) {
   try {
     logger.info(`Exec request method:` + call.request.name);
     // typeof call.request.payload is Buffer
@@ -55,7 +55,7 @@ function exec(call, callback) {
     // Dummy response
     const payload = JSON.parse(call.request.payload.toString());
 
-    const result = process(call.request.name, ...payload)
+    const result = await process(call.request.name, ...payload)
 
     const response = {
       response: Buffer.from(

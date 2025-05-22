@@ -11,6 +11,7 @@ linux:clean
 
 windows:clean
 	bun install && bun build --compile --target=bun-windows-x64 ./main.js --outfile ../../plugins/jslib.dll 
+	del ../../plugins/jslib.dll
 	mv ../../plugins/jslib.dll.exe ../../plugins/jslib.dll
 
 clean:
