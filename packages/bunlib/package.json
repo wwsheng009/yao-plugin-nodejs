@@ -1,0 +1,29 @@
+{
+  "name": "yao-plugin-nodejs",
+  "version": "1.0.0",
+  "description": "a nodejs grpc plugin for yao",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "ts-node main.ts",
+    "build": "tsc"
+  },
+  "keywords": [
+    "grpc",
+    "nodejs",
+    "yao",
+    "plugin"
+  ],
+  "author": "vincentwwsheng@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.13",
+    "ts-proto": "^2.7.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.14",
+    "@types/node": "^22.15.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
