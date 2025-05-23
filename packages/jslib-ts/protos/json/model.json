@@ -1,0 +1,46 @@
+{
+  "options": {
+    "syntax": "proto3"
+  },
+  "nested": {
+    "proto": {
+      "options": {
+        "go_package": "./"
+      },
+      "nested": {
+        "Request": {
+          "fields": {
+            "name": {
+              "type": "string",
+              "id": 1
+            },
+            "payload": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "Response": {
+          "fields": {
+            "response": {
+              "type": "bytes",
+              "id": 1
+            },
+            "type": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "Model": {
+          "methods": {
+            "Exec": {
+              "requestType": "Request",
+              "responseType": "Response"
+            }
+          }
+        }
+      }
+    }
+  }
+}

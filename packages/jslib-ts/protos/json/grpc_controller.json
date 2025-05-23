@@ -1,0 +1,25 @@
+{
+  "options": {
+    "syntax": "proto3"
+  },
+  "nested": {
+    "plugin": {
+      "options": {
+        "go_package": "./plugin"
+      },
+      "nested": {
+        "Empty": {
+          "fields": {}
+        },
+        "GRPCController": {
+          "methods": {
+            "Shutdown": {
+              "requestType": "Empty",
+              "responseType": "Empty"
+            }
+          }
+        }
+      }
+    }
+  }
+}

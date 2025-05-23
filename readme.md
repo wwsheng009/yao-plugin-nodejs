@@ -95,3 +95,78 @@ bun patch --commit 'node_modules/@protobufjs/inquire'
 ```sh
 bun build --compile main.js
 ```
+
+## proto文件转换
+
+在js中，可以有多种方式生成proto对象对应的js代码,推荐使用ts-proto方式生成。
+
+
+### ts-proto
+
+使用 ts-proto，直接生成ts文件。
+
+```bash
+bun add ts-proto
+#需要注意参数需要指向正确的执行文件--plugin=protoc-gen-ts_proto.exe
+bunx protoc --plugin=protoc-gen-ts_proto.exe=node_modules/.bin/ts-proto --ts_proto_out=ts --ts_proto_opt=outputServices=grpc-js protos/model.proto protos/grpc_controller.proto
+#会生成protos/protos/model.ts和protos/protos/grpc_controller.ts文件
+
+#在main_ts_proto.ts中导入生成的ts文件
+import { ModelService, ModelServer, Request, Response } from "./protos/ts/model";
+import { GRPCControllerService, GRPCControllerServer, Empty } from "./protos/ts/grpc_controller";
+```
+
+### 使用protobufjs生成json代码。
+
+先把proto文件转换成json定义文件，再使用protobufjs加载。
+```sh
+bun install -d protobufjs-cli
+
+bunx pbjs -t json protos/model.proto  > ./protos/json/model.json
+bunx pbjs -t json protos/grpc_controller.proto > ./protos/json/grpc_controller.json
+# 也可以使用pbjs命令将多个proto文件合并成一个json文件
+bunx pbjs -t json protos/model.proto  protos/grpc_controller.proto > ./protos/json/bundle.json
+# 也可以使用脚本进行转换
+bun scripts/generate_proto_json.ts
+
+# 生成的json文件可以直接使用protobufjs加载
+# 需要额外生成一个ts的类型定义文件protos/types.ts
+```
+
+
+### windows编译proto对象的ts定义文件
+
+使用grpc-tools工具生成js文件。
+
+```cmd
+bun install grpc-tools ts-protoc-gen --save-dev
+
+bunx grpc_tools_node_protoc ^
+  --js_out=import_style=commonjs,binary:protos/grpc ^
+  --grpc_out=grpc_js:protos/grpc ^
+  --plugin=protoc-gen-ts=%CD%\node_modules\.bin\protoc-gen-ts.cmd ^
+  --ts_out=grpc_js:protos/grpc ^
+  protos/grpc_controller.proto protos/model.proto
+```
+
+检查以下文件是否存在
+- node_modules\grpc-tools\bin\protoc.exe
+- node_modules\grpc-tools\bin\grpc_node_plugin.exe
+- node_modules\ts-protoc-gen\bin\protoc-gen-ts or node_modules\.bin\protoc-gen-ts.cmd
+
+生成文件在目录protos/grpc/protos下。
+
+### 使用pbjs命令行工具
+
+[protobuf.js](https://protobufjs.github.io/protobuf.js/index.html)使用文档
+
+从自 protobufjs 7.x.x 起，pbjs 已被拆分为单独的包.
+```sh
+# 安装pbjs/pbts
+bun install -d protobufjs-cli
+
+bunx pbjs -t static-module -w commonjs -o protos/pbjs/compiled.js protos/grpc_controller.proto protos/model.proto
+bunx pbts -o protos/pbjs/compiled.d.ts protos/pbjs/compiled.js
+
+# 生成的js文件定义还不能直接跟grpc使用，需要创建grpc需要的service对象。
+```
