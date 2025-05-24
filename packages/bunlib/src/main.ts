@@ -76,5 +76,4 @@ function main() {
     }
   );
 }
-console.log(require('process').env)
 main();
