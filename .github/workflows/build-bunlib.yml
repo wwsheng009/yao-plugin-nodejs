@@ -25,7 +25,7 @@ jobs:
         run: |
           docker build -t bunlib-builder .
           docker create --name bunlib-container bunlib-builder
-          docker cp bunlib-container:/app/bunlib.so ./bunlib.so
+          docker cp bunlib-container:/bunlib.so ./bunlib.so
           docker rm bunlib-container
 
       - name: Upload bunlib.so artifact
