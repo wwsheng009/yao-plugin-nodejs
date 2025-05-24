@@ -41,6 +41,7 @@ const modelImpl: ModelServer = {
 };
 
 function main() {
+  logger.info(`gRPC server starting...`);
   server = new grpc.Server();
   server.addService(GRPCControllerService, grpcControllerImpl);
   server.addService(ModelService, modelImpl);

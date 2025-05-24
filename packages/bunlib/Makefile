@@ -1,4 +1,6 @@
 # build the bunlib entry file for yao framework
+linux-unix:clean
+	bun install && bun build --compile --target=bun-linux-x64 ./src/main_unix.ts --outfile ../../yaoapp/plugins/bunlib.so 
 
 linux:clean
 	bun install && bun build --compile --target=bun-linux-x64 ./src/main.ts --outfile ../../yaoapp/plugins/bunlib.so 
