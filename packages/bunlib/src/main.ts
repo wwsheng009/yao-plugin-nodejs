@@ -52,9 +52,8 @@ function main() {
   // 检查操作系统是否为Linux
   if (require('process').platform === 'linux') {
     // 生成随机数用于socket文件名
-    const random = Math.floor(Math.random() * 10000);
-    port = `unix:/tmp/bunlib-${random}.sock`;
-    handshake = `1|1|unix|/tmp/bunlib-${random}.sock|grpc`;
+    port = `unix:/tmp/yao-plugin-bunlib.sock`;
+    handshake = `1|1|unix|/tmp/yao-plugin-bunlib.sock|grpc`;
   }
   server.bindAsync(
     port,
