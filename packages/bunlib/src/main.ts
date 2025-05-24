@@ -46,8 +46,18 @@ function main() {
   server.addService(GRPCControllerService, grpcControllerImpl);
   server.addService(ModelService, modelImpl);
 
+  let port = "127.0.0.1:0"
+  let handshake = "`1|1|tcp|127.0.0.1:${port}|grpc`;"
+
+  // 检查操作系统是否为Linux
+  if (require('process').platform === 'linux') {
+    // 生成随机数用于socket文件名
+    const random = Math.floor(Math.random() * 10000);
+    port = `unix:/tmp/bunlib-${random}.sock`;
+    handshake = `1|1|unix|/tmp/bunlib-${random}.sock|grpc`;
+  }
   server.bindAsync(
-    "127.0.0.1:0",
+    port,
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
       if (error) {
@@ -60,12 +70,11 @@ function main() {
       // 1 ProtocolVersion固定版本
       // tcp 网络协议tcp/unix，tcp协议或是unix socket
       // netrpc/grpc 协议类型，插件只支持grpc
-      const handshake = `1|1|tcp|127.0.0.1:${port}|grpc`;
       // 输出到stdout，唯一的输出，其它的日志使用logger
       console.log(handshake);
       logger.info(`gRPC server running on port ${port}`);
     }
   );
 }
-
+console.log(require('process').env)
 main();

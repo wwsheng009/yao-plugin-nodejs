@@ -1,0 +1,50 @@
+name: Build and Release Bunlib
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/bunlib
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build bunlib with Docker
+        run: |
+          docker build -t bunlib-builder .
+          docker create --name bunlib-container bunlib-builder
+          docker cp bunlib-container:/app/bunlib.so ./bunlib.so
+          docker rm bunlib-container
+
+      - name: Upload bunlib.so artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bunlib.so
+          path: packages/bunlib/bunlib.so
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download bunlib.so artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: bunlib.so
+          path: .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: bunlib.so
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
